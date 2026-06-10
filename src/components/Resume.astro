@@ -1,0 +1,163 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface ResumeCopy {
+  name: string;
+  location: string;
+  summary: string;
+  projectsNote: string;
+  sections: {
+    about: { title: string };
+    projects: { title: string };
+  };
+  profile: { title: string; body: string }[];
+  projects: {
+    title: string;
+    body: string;
+    linkLabel?: string;
+    linkHref?: string;
+  }[];
+}
+
+interface Props {
+  t: { resume: ResumeCopy };
+}
+
+const { t } = Astro.props;
+const currentYear = new Date().getFullYear();
+const isDev = import.meta.env.DEV;
+---
+
+<section id="about" class="w-full py-16 md:pt-18 md:pb-4">
+  <div class="mx-auto max-w-3xl px-5 sm:px-6">
+    <header class="border-b border-neutral-900/10 pb-10 dark:border-white/10">
+      <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10">
+        <div
+          id="profile-avatar"
+          class="h-36 w-36 overflow-hidden rounded-full border border-neutral-900/10 bg-neutral-100 sm:h-40 sm:w-40"
+        >
+          <img
+            src="/images/standing.jpeg"
+            alt={`${t.resume.name} portrait`}
+            class="h-full w-full object-cover"
+          />
+        </div>
+        <div>
+          <h1
+            id="resume-name"
+            class="text-3xl text-neutral-950 dark:text-neutral-100 md:text-4xl"
+          >
+            {t.resume.name}
+          </h1>
+          <p
+            id="resume-location"
+            class:list={[
+              "mt-2 flex items-center gap-1.5 text-base text-neutral-600 dark:text-neutral-300",
+              !t.resume.location && "hidden",
+            ]}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-4 w-4"
+            >
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <span id="resume-location-text">{t.resume.location}</span>
+          </p>
+        </div>
+      </div>
+      <p
+        id="resume-summary"
+        class:list={[
+          "mt-6 max-w-2xl text-base leading-8 text-neutral-700 dark:text-neutral-200",
+          !t.resume.summary && "hidden",
+        ]}
+      >
+        {t.resume.summary}
+      </p>
+    </header>
+
+    <section class="border-b border-neutral-900/10 py-10 dark:border-white/10">
+      <h2 id="about-title" class="text-2xl font-semibold text-neutral-950 dark:text-neutral-100">
+        {t.resume.sections.about.title}
+      </h2>
+      <div id="profile-list" class="mt-5 space-y-4 text-base leading-8 text-neutral-700 dark:text-neutral-200">
+        {t.resume.profile
+          .filter((item) => item.body)
+          .map((item) => <p>{item.body}</p>)}
+      </div>
+      <div class="mt-6 flex items-center gap-4">
+        <a
+          href="https://www.linkedin.com/in/harukikuriwada/"
+          target="_blank"
+          rel="noreferrer noopener"
+          aria-label="LinkedIn"
+          class="text-neutral-500 transition hover:text-neutral-950 dark:text-neutral-400 dark:hover:text-white"
+        >
+          <Icon name="simple-icons:linkedin" class="h-5 w-5" />
+        </a>
+        <a
+          href="https://github.com/harukikuri"
+          target="_blank"
+          rel="noreferrer noopener"
+          aria-label="GitHub"
+          class="text-neutral-500 transition hover:text-neutral-950 dark:text-neutral-400 dark:hover:text-white"
+        >
+          <Icon name="simple-icons:github" class="h-5 w-5" />
+        </a>
+      </div>
+    </section>
+
+    {isDev && t.resume.projects.filter((item) => item.body).length > 0 && (
+      <section class="border-b border-neutral-900/10 py-10 dark:border-white/10">
+        <h2 id="projects-title" class="text-2xl font-semibold text-neutral-950 dark:text-neutral-100">
+          {t.resume.sections.projects.title}
+        </h2>
+        <div id="projects-list" class="mt-6 space-y-6">
+          {
+            t.resume.projects
+              .filter((item) => item.body)
+              .map((item) => (
+                <article>
+                  <h3 class="text-lg font-semibold text-neutral-950 dark:text-neutral-100">{item.title}</h3>
+                  <p class="mt-2 text-base leading-8 text-neutral-700 dark:text-neutral-200">
+                    {item.body}{" "}
+                    {item.linkLabel && item.linkHref ? (
+                      <a
+                        href={item.linkHref}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        class="underline decoration-neutral-300 underline-offset-4 transition hover:text-neutral-950 hover:decoration-neutral-950 dark:decoration-neutral-600 dark:hover:text-white dark:hover:decoration-white"
+                      >
+                        {item.linkLabel}
+                      </a>
+                    ) : null}
+                  </p>
+                </article>
+              ))
+          }
+        </div>
+        <p
+          id="projects-note"
+          class:list={[
+            "mt-6 text-sm text-neutral-500 dark:text-neutral-400",
+            !t.resume.projectsNote && "hidden",
+          ]}
+        >
+          {t.resume.projectsNote}
+        </p>
+      </section>
+    )}
+
+    <footer class="flex w-full flex-col items-center justify-center gap-5 border-t border-neutral-900/10 px-6 pb-12 pt-10 dark:border-white/10">
+      <p class="text-sm text-neutral-500 dark:text-neutral-400">© {currentYear} {t.resume.name}</p>
+    </footer>
+  </div>
+</section>

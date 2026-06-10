@@ -4,17 +4,63 @@ import "../styles/global.css";
 interface Props {
   title: string;
   description: string;
+  lang: "en" | "ja";
 }
 
-const { title, description } = Astro.props;
+const { title, description, lang } = Astro.props;
+
+const site = Astro.site?.href.replace(/\/$/, "") ?? "https://harukikuriwada.org";
+const enUrl = `${site}/`;
+const jaUrl = `${site}/ja/`;
+const canonical = lang === "ja" ? jaUrl : enUrl;
+const ogLocale = lang === "ja" ? "ja_JP" : "en_US";
+const ogLocaleAlt = lang === "ja" ? "en_US" : "ja_JP";
+const ogImage = `${site}/images/standing.jpeg`;
+
+// Person structured data — helps Google connect both name spellings to this page.
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: lang === "ja" ? "栗和田 玄紀" : "Haruki Kuriwada",
+  alternateName: lang === "ja" ? "Haruki Kuriwada" : "栗和田 玄紀",
+  url: canonical,
+  image: ogImage,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: lang === "ja" ? "東京都" : "Tokyo",
+    addressCountry: "JP",
+  },
+  sameAs: [
+    "https://www.linkedin.com/in/harukikuriwada/",
+    "https://github.com/harukikuri",
+    "https://yamap.com/users/5090795",
+  ],
+};
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="ja" href={jaUrl} />
+    <link rel="alternate" hreflang="x-default" href={enUrl} />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={ogLocaleAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,13 +69,17 @@ const { title, description } = Astro.props;
       rel="stylesheet"
     />
     <title>{title}</title>
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(personSchema)}
+    />
     <script is:inline>
       const savedTheme = localStorage.getItem("theme");
       const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
       const theme = savedTheme || (systemPrefersDark ? "dark" : "light");
       document.documentElement.classList.toggle("dark", theme === "dark");
       document.documentElement.dataset.theme = theme;
-      document.documentElement.lang = localStorage.getItem("lang") || "en";
     </script>
   </head>
   <body>
@@ -39,22 +89,30 @@ const { title, description } = Astro.props;
 
     <div class="fixed bottom-7 right-4 z-50 flex items-center gap-4">
       <div class="control-pill">
-        <button
-          type="button"
-          class="control-pill__option"
+        <a
+          href="/"
+          class:list={[
+            "control-pill__option",
+            lang === "en" && "control-pill__option--active",
+          ]}
           data-lang-button="en"
-          aria-pressed="false"
+          hreflang="en"
+          aria-current={lang === "en" ? "page" : undefined}
         >
           EN
-        </button>
-        <button
-          type="button"
-          class="control-pill__option"
+        </a>
+        <a
+          href="/ja/"
+          class:list={[
+            "control-pill__option",
+            lang === "ja" && "control-pill__option--active",
+          ]}
           data-lang-button="ja"
-          aria-pressed="false"
+          hreflang="ja"
+          aria-current={lang === "ja" ? "page" : undefined}
         >
           日本語
-        </button>
+        </a>
       </div>
 
       <button

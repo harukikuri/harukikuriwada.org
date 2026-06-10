@@ -17,10 +17,10 @@ html {
 }
 
 html.dark {
-  background: #0f172a;
+  background: #171717;
 
   --control-fill: #e5e5e5;
-  --control-on-fill: #0f172a;
+  --control-on-fill: #171717;
   --control-border: rgba(255, 255, 255, 0.1);
 }
 
@@ -72,11 +72,15 @@ body {
 .control-pill__option {
   position: relative;
   z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   height: 2rem;
   width: 5rem;
   cursor: pointer;
   border-radius: 9999px;
   color: rgb(64 64 64);
+  text-decoration: none;
   transition: color 200ms ease;
 }
 
