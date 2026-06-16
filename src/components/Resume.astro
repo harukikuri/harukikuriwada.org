@@ -75,10 +75,7 @@ const isDev = import.meta.env.DEV;
     </header>
 
     <section class="border-b border-neutral-900/10 py-10 dark:border-white/10">
-      <h2 id="about-title" class="text-2xl font-semibold text-neutral-950 dark:text-neutral-100">
-        {t.resume.sections.about.title}
-      </h2>
-      <div id="profile-list" class="mt-5 space-y-4 text-sm leading-7 text-neutral-700 dark:text-neutral-200">
+      <div id="profile-list" class="space-y-4 text-sm leading-7 text-neutral-700 dark:text-neutral-200">
         {t.resume.profile
           .filter((item) => item.body)
           .map((item) => <p>{item.body}</p>)}
