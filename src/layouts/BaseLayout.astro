@@ -15,7 +15,6 @@ const jaUrl = `${site}/ja/`;
 const canonical = lang === "ja" ? jaUrl : enUrl;
 const ogLocale = lang === "ja" ? "ja_JP" : "en_US";
 const ogLocaleAlt = lang === "ja" ? "en_US" : "ja_JP";
-const ogImage = `${site}/images/standing.jpeg`;
 
 // Person structured data — helps Google connect both name spellings to this page.
 const personSchema = {
@@ -24,7 +23,6 @@ const personSchema = {
   name: lang === "ja" ? "栗和田 玄紀" : "Haruki Kuriwada",
   alternateName: lang === "ja" ? "Haruki Kuriwada" : "栗和田 玄紀",
   url: canonical,
-  image: ogImage,
   address: {
     "@type": "PostalAddress",
     addressLocality: lang === "ja" ? "東京都" : "Tokyo",
@@ -53,13 +51,11 @@ const personSchema = {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={ogImage} />
     <meta property="og:locale" content={ogLocale} />
     <meta property="og:locale:alternate" content={ogLocaleAlt} />
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
