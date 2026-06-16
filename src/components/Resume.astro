@@ -35,14 +35,14 @@ const isDev = import.meta.env.DEV;
         <div>
           <h1
             id="resume-name"
-            class="text-3xl text-neutral-950 dark:text-neutral-100 md:text-4xl"
+            class="text-lg text-neutral-950 dark:text-neutral-100 md:text-xl"
           >
             {t.resume.name}
           </h1>
           <p
             id="resume-location"
             class:list={[
-              "mt-2 flex items-center gap-1.5 text-base text-neutral-600 dark:text-neutral-300",
+              "mt-2 flex items-center gap-1.5 text-sm text-neutral-600 dark:text-neutral-300",
               !t.resume.location && "hidden",
             ]}
           >
@@ -66,7 +66,7 @@ const isDev = import.meta.env.DEV;
       <p
         id="resume-summary"
         class:list={[
-          "mt-6 max-w-2xl text-base leading-8 text-neutral-700 dark:text-neutral-200",
+          "mt-6 max-w-2xl text-sm leading-7 text-neutral-700 dark:text-neutral-200",
           !t.resume.summary && "hidden",
         ]}
       >
@@ -78,7 +78,7 @@ const isDev = import.meta.env.DEV;
       <h2 id="about-title" class="text-2xl font-semibold text-neutral-950 dark:text-neutral-100">
         {t.resume.sections.about.title}
       </h2>
-      <div id="profile-list" class="mt-5 space-y-4 text-base leading-8 text-neutral-700 dark:text-neutral-200">
+      <div id="profile-list" class="mt-5 space-y-4 text-sm leading-7 text-neutral-700 dark:text-neutral-200">
         {t.resume.profile
           .filter((item) => item.body)
           .map((item) => <p>{item.body}</p>)}
@@ -117,7 +117,7 @@ const isDev = import.meta.env.DEV;
               .map((item) => (
                 <article>
                   <h3 class="text-lg font-semibold text-neutral-950 dark:text-neutral-100">{item.title}</h3>
-                  <p class="mt-2 text-base leading-8 text-neutral-700 dark:text-neutral-200">
+                  <p class="mt-2 text-sm leading-7 text-neutral-700 dark:text-neutral-200">
                     {item.body}{" "}
                     {item.linkLabel && item.linkHref ? (
                       <a
